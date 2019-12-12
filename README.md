@@ -1,2 +1,2 @@
 # CKA
-Contains files for Certified Kubernetes Administrator
+Contains files related to k8 for Certified Kubernetes Administrator certifications and practice
