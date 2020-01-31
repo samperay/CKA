@@ -6,27 +6,48 @@ Contains files related to k8 for Certified Kubernetes Administrator certificatio
 You can create your own definition files using the generator using `kubectl run` commands.
 https://kubernetes.io/docs/reference/kubectl/conventions/
 
-```
-Create an NGINX Pod
-
-kubectl run --generator=run-pod/v1 nginx --image=nginx
-
-Generate POD Manifest YAML file (-o yaml). Don't create it(--dry-run)
-kubectl run --generator=run-pod/v1 nginx --image=nginx --dry-run -o yaml
-
-
-
-Create a deployment
-kubectl run --generator=deployment/v1beta1 nginx --image=nginx
-
-Generate Deployment YAML file (-o yaml). Don't create it(--dry-run)
-kubectl run --generator=deployment/v1beta1 nginx --image=nginx --dry-run -o yaml
-
-Generate Deployment YAML file (-o yaml). Don't create it(--dry-run) with 4 Replicas (--replicas=4)
-kubectl run --generator=deployment/v1beta1 nginx --image=nginx --dry-run --replicas=4 -o yaml
-
-Save it to a file - (If you need to modify or add some other details before actually creating it)
-kubectl run --generator=deployment/v1beta1 nginx --image=nginx --dry-run --replicas=4 -o yaml > nginx-deployment.yaml
+It would be helpful if we are creating alias for long commands to save time during exams.. 
+here is the list, I shall be using in this repository.
 
 ```
+cat ~/.bash_aliases
 
+# kubectl get
+alias k="kubectl"
+alias kgn="kubectl get nodes -o wide"
+alias kgp="kubectl get pods -o wide"
+alias kgd="kubectl get deployment -o wide"
+alias kgs="kubectl get svc -o wide"
+
+# kubectl describe
+alias kdp="kubectl describe pod"
+alias kdd="kubectl describe deployment"
+alias kds="kubectl describe service"
+alias kdn="kubectl describe node"
+```
+
+# Create YAML
+
+Don't write yaml as it can be generated using below commands.
+
+## Pod
+```
+kubectl run --generator=run-pod/v1 nginx --image=nginx -o yaml --dry-run > nginx.yaml
+```
+## Deployment
+
+```
+kubectl create deploy nginx --image=nginx --dry-run -o yaml > nginx-ds.yaml
+kubectl run --generator=deployment/v1beta1 nginx --image=nginx --dry-run --replicas=4 -o yaml >nginx_rp.yaml
+```
+
+## Service
+```
+kubectl expose pod hello-world --type=NodePort --name=example-service
+kubectl expose deployment hello-world --type=NodePort --name=example-service
+```
+
+## Generate From Existing Resources
+```
+kubectl get deployment "<deployment_name>" -n "<namespace>" -o yaml > new-deployment.yaml
+```
