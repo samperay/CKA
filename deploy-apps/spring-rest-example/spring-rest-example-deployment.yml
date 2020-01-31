@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-rest-example-deployment
+  labels:
+    app: restapi-example
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: restapi-example
+  template:
+    metadata:
+      labels:
+        app: restapi-example
+    spec:
+      containers:
+      - name: spring-rest-example
+        image: sunlnx/spring-rest-example
+        ports:
+        - containerPort: 8080
