@@ -37,8 +37,11 @@ kubectl run --generator=run-pod/v1 nginx --image=nginx -o yaml --dry-run > nginx
 ## Deployment
 
 ```
-kubectl create deploy nginx --image=nginx --dry-run -o yaml > nginx-ds.yaml
-kubectl run --generator=deployment/v1beta1 nginx --image=nginx --dry-run --replicas=4 -o yaml >nginx_rp.yaml
+kubectl create deploy nginx --image=nginx --dry-run -o yaml > nginx-deployment.yaml
+```
+## ReplicationSet
+```
+kubectl get rs deployment/nginx -o yaml >nginx-rs.yaml
 ```
 
 ## Service
@@ -51,3 +54,6 @@ kubectl expose deployment hello-world --type=NodePort --name=example-service
 ```
 kubectl get deployment "<deployment_name>" -n "<namespace>" -o yaml > new-deployment.yaml
 ```
+
+# Kubernetes Cheat Sheet
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/
