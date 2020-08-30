@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
   name: nginx
@@ -6,6 +6,7 @@ spec:
   selector:
     matchLabels:
       app: nginx
+  replicas: 2 # Update the replicas from 2 to 4
   template:
     metadata:
       labels:
@@ -13,4 +14,6 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
