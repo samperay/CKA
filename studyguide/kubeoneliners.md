@@ -1,7 +1,6 @@
 # Kubernetes Commands
 
-You can create your own definition files using the generator using `kubectl run` commands.
-https://kubernetes.io/docs/reference/kubectl/conventions/
+This document helps us in understanding using the kubernetes in the imperative way. 
 
 It would be helpful if we are creating alias for long commands to save time during exams.. 
 here is the list, I shall be using in this repository.
@@ -23,34 +22,34 @@ alias kds="kubectl describe service"
 alias kdn="kubectl describe node"
 ```
 
-# Create YAML
-
-Don't write yaml as it can be generated using below commands.
-
-## Pod
-```
-kubectl run --generator=run-pod/v1 nginx --image=nginx -o yaml --dry-run > nginx.yaml
-```
-## Deployment
+## Imperative Method
 
 ```
-kubectl create deploy nginx --image=nginx --dry-run -o yaml > nginx-deployment.yaml
-```
-## ReplicationSet
-```
-kubectl get rs deployment/nginx -o yaml > nginx-rs.yaml
+kubectl run nginx --image=nginx:latest
+kubectl create deployment --image=nginx nginx
+kubectl expose deployment nginx --port 80
+kubectl edit deployment nginx 
+kubectl scale deployment nginx --replicas=5
+kubectl set image deployment nginx nginx=nginx:1.15.9
+kubectl create -f nginx.yml
+kubectl replace -f nginx.yml
+kubectl delete -f nginx.yml
+kubectl run nginx --image=nginx  --dry-run=client -o yaml
+kubectl create deployment --image=nginx nginx --dry-run=client -o yaml > nginx-deployment.yaml
+kubectl expose pod redis --port=6379 --name redis-service --dry-run=client -o yaml
+                                or
+kubectl create service clusterip redis --tcp=6379:6379 --dry-run=client -o yaml
+kubectl expose pod nginx --port=80 --name nginx-service --type=NodePort --dry-run=client -o yaml
+                                or 
+kubectl create service nodeport nginx --tcp=80:80 --node-port=30080 --dry-run=client -o yaml
 ```
 
-## Service
+## Declarative 
 ```
-kubectl expose pod hello-world --type=NodePort --name=example-service
-kubectl expose deployment hello-world --type=NodePort --name=example-service
+kubectl apply -f nginx.yml
 ```
 
-## Generate From Existing Resources
-```
-kubectl get deployment "<deployment_name>" -n "<namespace>" -o yaml > new-deployment.yaml
-```
+
 
 # Kubernetes Cheat Sheet
 https://kubernetes.io/docs/reference/kubectl/cheatsheet/
