@@ -3,6 +3,8 @@ Contains files related to k8 for Certified Kubernetes Administrator certificatio
 
 # Kubernetes Core Concepts
 - Kubernetes Cluster Architecture(kubernetes_arch.md)
+- Explained about various services like ( Deployment, pods, services, replications, namespaces)
+- All the explanations are included with examples.
 
 # Scheduling
 - Label & Selectors
@@ -11,6 +13,7 @@ Contains files related to k8 for Certified Kubernetes Administrator certificatio
 - Multiple Schedulers
 - Manual Scheduling
 - Schedule Events
-- Configure Scheduler 
+- Configure Scheduler
 
-
+# Kubernets Oneliners
+These are something which are required to be used as a reference so that it will help.
