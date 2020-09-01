@@ -1,8 +1,8 @@
 # Kubernetes Commands
 
-This document helps us in understanding using the kubernetes in the imperative way. 
+This document helps us in understanding using the kubernetes in the imperative way.
 
-It would be helpful if we are creating alias for long commands to save time during exams.. 
+It would be helpful if we are creating alias for long commands to save time during exams..
 here is the list, I shall be using in this repository.
 
 ```
@@ -28,7 +28,7 @@ alias kdn="kubectl describe node"
 kubectl run nginx --image=nginx:latest
 kubectl create deployment --image=nginx nginx
 kubectl expose deployment nginx --port 80
-kubectl edit deployment nginx 
+kubectl edit deployment nginx
 kubectl scale deployment nginx --replicas=5
 kubectl set image deployment nginx nginx=nginx:1.15.9
 kubectl create -f nginx.yml
@@ -40,16 +40,14 @@ kubectl expose pod redis --port=6379 --name redis-service --dry-run=client -o ya
                                 or
 kubectl create service clusterip redis --tcp=6379:6379 --dry-run=client -o yaml
 kubectl expose pod nginx --port=80 --name nginx-service --type=NodePort --dry-run=client -o yaml
-                                or 
+                                or
 kubectl create service nodeport nginx --tcp=80:80 --node-port=30080 --dry-run=client -o yaml
 ```
 
-## Declarative 
+## Declarative
 ```
 kubectl apply -f nginx.yml
 ```
-
-
 
 # Kubernetes Cheat Sheet
 https://kubernetes.io/docs/reference/kubectl/cheatsheet/
