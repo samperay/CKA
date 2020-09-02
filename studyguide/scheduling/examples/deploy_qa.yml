@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginxqa
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginxqa
+  template:
+    metadata:
+      labels:
+        app: nginxqa
+        env: qa
+        bu: kubesup
+        service: frontend
+    spec:
+      containers:
+      - name: nginxqa
+        image: nginx:latest
+        ports:
+        - containerPort: 80

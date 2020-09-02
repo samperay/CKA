@@ -13,3 +13,11 @@ kubectl delete -f nodeName.yml
 
 ## Labels & Selectors
 Labels and Selectors are standard methods to group things together. Labels are properties attach to each item. Selectors help you to filter these items
+
+you can select the pod using labels
+```
+kubectl get pods --selector app=nginx
+```
+
+## Annotations
+While labels and selectors are used to group objects, annotations are used to record other details for informative purpose
