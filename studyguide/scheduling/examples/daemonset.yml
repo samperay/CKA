@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nginx-daemonset
+spec:
+  # modify replicas according to your case
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+      service: frontend
+  template:
+    metadata:
+      labels:
+        app: nginx
+        service: frontend
+    spec:
+      containers:
+      - name: nginx-daemonset
+        image: nginx:latest
