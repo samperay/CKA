@@ -111,3 +111,32 @@ Daemonset usecases:
 - log viewer
 - Helper pods for applications
 - Networking pods (weave net)
+
+# Static pods
+When you need to create pods without any interference from the kubeapi server or kubernetes management control plane, you can write your yaml files and place in the kubelet directory and create pods. these kind of pods which have no intereference from the any of the kubernetes components are called as *static pod*
+
+What if we run the static pods and if these nodes are part of kubernetes manage control plane, would it be known to kubeapi server? Yes kubeapi server would be known that there is pod running in the node as kubelet provides a mirror object in the kubeapi as readonly object.
+
+
+## First Method
+
+You can configure the kubelet to read the pod defination files from a directory on the server designated to store information about pods.The designated directory can be any directory on the host and the location of that directory is passed in to the kubelet as an option while running the service. *--pod-manifest-path*
+
+```
+systemctl status kubelet.service
+cat /lib/systemd/system/kubelet.service
+ExecStart=/usr/local/bin/kubelet \\
+.
+.
+--pod-manifest-path=/etc/kubernetes/manifests
+.
+```
+
+## Second Method
+Incase if you have created kubeadmin way of configuring the cluster, your manifests will be in below location.
+```
+systemctl status kubelet.service
+cat /var/lib/kubelet/config.yaml
+
+look for "staticPodPath: /etc/kubernetes/manifests"
+```
