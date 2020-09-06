@@ -22,5 +22,12 @@ Contains files related to k8 for Certified Kubernetes Administrator certificatio
 - Scale Applications
 - Self-Healing Application
 
+# Storage
+
+- Introduction of Docker Storage
+- Persistent Volume Claim
+- Persistent Volume
+- Storage Class
+
 # Kubernets Oneliners
 These are something which are required to be used as a reference so that it will help.
