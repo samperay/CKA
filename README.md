@@ -29,5 +29,13 @@ Contains files related to k8 for Certified Kubernetes Administrator certificatio
 - Persistent Volume
 - Storage Class
 
+# Networking
+
+- Cluster Networking
+- Pod Networking
+- CNI in Kubernetes
+- CoreDNS
+- Ingress
+
 # Kubernets Oneliners
 These are something which are required to be used as a reference so that it will help.
