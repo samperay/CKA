@@ -39,6 +39,32 @@ ip netns exec red ping 192.168.15.2
 
 # Cluster Networking
 
+## Conrol plane nodes
+
+Protocol	Direction	Port Range	Purpose	               Used By
+TCP	      Inbound	  6443*	    Kubernetes API server	   All
+TCP	      Inbound	  2379-2380	etcd server client API	 kube-apiserver, etcd
+TCP	      Inbound	  10250	    Kubelet API	Self,        Control plane
+TCP	      Inbound	  10251	    kube-scheduler	         Self
+TCP	      Inbound	  10252	    kube-controller-manager	  Self
+
+## Worker nodes
+Protocol	Direction	Port Range	Purpose	            Used By
+TCP	      Inbound	  10250	      Kubelet API	        Self, Control plane
+TCP	      Inbound	  30000-32767	NodePort Services†	All
+
+## Useful commands
+```
+ip link
+ip addr
+ip addr add 192.168.56.10/24 dev eth0
+ip route
+ip route add 192.168.56.0/24 via 192.168.56.1
+cat /proc/sys/net/ipv4/ip_forward
+arp
+netstat -plnt
+route
+```
 
 # Pod Networking
 
