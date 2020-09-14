@@ -107,3 +107,72 @@ kubectl logs etcd-master
 docker ps -a
 docker logs <container-id>
 ```
+
+## Certificate API
+
+The CA is really just the pair of key and certificate files that we have generated, whoever gains access to these pair of files can sign any certificate for the kubernetes environment.
+Kubernetes has a built-in certificates API that can do this for you.
+
+- CertificateSigningRequest
+- Review Requests
+- Approve Requests
+- Share to Users
+
+So user does create a key and CSR
+```
+openssl genrsa -out jane.key 2048
+openssl req -new -key jane.key -subj "/CN=jane" -out jane.csr
+```
+
+Sends the request to the administrator and the adminsitrator takes the key and creates a CSR object, with kind as "CertificateSigningRequest" and a encoded "jane.csr"
+
+```
+apiVersion: certificates.k8s.io/v1beta1
+kind: CertificateSigningRequest
+metadata:
+  name: jane
+spec:
+  groups:
+  - system:authenticated
+  usages:
+  - digital signature
+  - key encipherment
+  - server auth
+  request:
+    <certificate-goes-here>
+```
+
+```
+kubectl get csr
+kubectl certificate approve jane
+kubectl get csr jane -o yaml
+echo "<certificate>" |base64 --decode
+```
+
+Deny request if its inappropriate
+```
+kubectl certificate deny jane
+kubectl delete csr jane
+```
+
+All the certificate releated operations are carried out by the controller manager.
+```
+$ cat kube-controller-manager.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    component: kube-controller-manager
+    tier: control-plane
+  name: kube-controller-manager
+  namespace: kube-system
+spec:
+  containers:
+  - command:
+    - kube-controller-manager
+<Clip>
+    - --cluster-signing-cert-file=/etc/kubernetes/pki/ca.crt
+    - --cluster-signing-key-file=/etc/kubernetes/pki/ca.key
+
+```
