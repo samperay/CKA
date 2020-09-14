@@ -37,5 +37,17 @@ Contains files related to k8 for Certified Kubernetes Administrator certificatio
 - CoreDNS
 - Ingress
 
+# Security
+
+- Kubernetes Security Primitives
+- Authentication
+- TLS certificates for cluster components
+- Secure Persistent key-value store
+- Authorization
+- Images Security
+- Security Contexts
+- Network Policies
+
+
 # Kubernets Oneliners
 These are something which are required to be used as a reference so that it will help.
