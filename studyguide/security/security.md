@@ -274,3 +274,79 @@ kubectl api-resources --namespaced=false
 ```
 
 You can create a cluster role for namespace resources as well. When you do that user will have access to these resources across all namespaces
+
+```
+kubectl create -f cluster-roles.yml
+kubectl auth can-i list nodes --as michelle
+```
+
+## Images Security
+
+when we pull image from "nginx" we are pulling from the nginx/nginx of the private docker.io hub.
+so you need to login to your hub.docker.com so that kubelet will try to pull image from the repository and deploy applications in the worker nodes.
+
+```
+containers:
+- name: nginx
+  image: nginx
+```
+
+what if the repository is private, then you need to specify the DNS name prefixed with the docker image.
+```
+containers:
+- name: nginx
+  image: private-repo/nginx:latest
+```
+
+If you have to modify the docker containers which has to be provided with the secrets, kubernets have secrets where you can store your credentials.
+
+```
+kubectl create secret docker-registry private-reg-cred --docker-username=dock_user --docker-password=dock_password --docker-server=myprivateregistry.com:5000 --docker-email=dock_user@myprivateregistry.com
+```
+you would be using these credentials for the pod in applications to be up and running.
+
+```
+spec:
+  containers:
+  - name: private-reg-container
+    image: <your-private-image>
+  imagePullSecrets:
+  - name: private-reg-cred
+```
+
+## Secrurity Contexts
+You may choose to configure the security settings at a container level or at a pod level.
+
+To add security context on the container and a field called securityContext under the spec section.
+
+```
+spec:
+  securityContext:
+    runAsUser: 1010
+  containers:
+  - name: ubuntu
+```
+
+To add security context at security level,
+
+```
+spec:
+  containers:
+  - name: ubuntu
+    image: ubuntu
+    command: ["sleep", "3600"]
+    securityContext:
+      runAsUser: 1000
+      capabilities:
+        add: ["MAC_ADMIN"]
+```
+
+## Network Policies
+
+There are two types of traffic
+
+- Ingress
+- Egress
+
+Network policies can be applied on the pods for which traffic can be allowed or rejected.
+https://kubernetes.io/docs/concepts/services-networking/network-policies/

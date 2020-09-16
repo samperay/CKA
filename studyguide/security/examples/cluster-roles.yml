@@ -1,8 +1,10 @@
+# A new user michelle joined the team. She will be focusing on the nodes in the cluster. Create the required ClusterRoles and ClusterRoleBindings so she gets access to the nodes
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: cluster-administrator
+  name: michelle-nodes-admin-role
 rules:
 - apiGroups: [""] # "" indicates the core API group
   resources: ["nodes"]
@@ -11,12 +13,12 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: cluster-admin-role-binding
+  name: michelle-nodes-admin-role-binding
 subjects:
 - kind: User
-  name: cluster-admin
+  name:  michelle
   apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: ClusterRole
-  name: cluster-administrator
+  name: michelle-nodes-admin-role
   apiGroup: rbac.authorization.k8s.io

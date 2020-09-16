@@ -1,0 +1,17 @@
+# Update pod 'ubuntu-sleeper' to run as Root user and with the 'SYS_TIME' capability.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-sleeper
+  namespace: default
+spec:
+  containers:
+  - command:
+    - sleep
+    - "4800"
+    image: ubuntu
+    name: ubuntu-sleeper
+    securityContext:
+      capabilities:
+        add: ["SYS_TIME"]
