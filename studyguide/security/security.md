@@ -176,3 +176,101 @@ spec:
     - --cluster-signing-key-file=/etc/kubernetes/pki/ca.key
 
 ```
+
+## kubeconfig
+
+Client uses the certificate file and key to query the kubernetes Rest API for a list of pods using curl.
+
+```
+kubectl get pods --kubeconfig config
+```
+
+The kubeconfig file has 3 sections
+
+- Clusters
+- Contexts
+- Users
+
+```
+apiVersion: v1
+clusters: <============
+- cluster:
+    certificate-authority-data: LS0tLS1g==
+    server: https://192.168.56.51:6443
+  name: kubernetes
+contexts:  <============
+- context:
+    cluster: kubernetes
+    user: kubernetes-admin
+  name: kubernetes-admin@kubernetes
+current-context: kubernetes-admin@kubernetes
+kind: Config
+preferences: {}
+users: <============
+- name: kubernetes-admin
+  user:
+    client-certificate-data: LS0tLtLQo=
+    client-key-data: LS0tCg==
+```
+
+```
+kubectl config view
+kubectl config veiw --kubeconfig=my-custom-config
+kubeclt config -h
+```
+
+## API Groups
+
+The kubernetes API is grouped into multiple such groups based on thier purpose. Such as one for APIs, one for healthz, metrics and logs etc.
+
+These APIs are catagorized into two.
+- core group, functionality exists
+- Named group, More organized and going forward all the newer features are going to be made available
+
+```
+curl http://localhost:6443 -k
+curl http://localhost:6443/apis -k
+```
+
+## RBAC
+
+### Role
+
+Roles and Rolebindings are namespaced meaning they are created within namespaces.
+
+Roles can be described with below three parameters.
+- apiGroups
+- resources
+- verbs
+
+we need to link the user to that role. i.e called *rolebinding*
+
+```
+kubectl create -f developer-role.yaml
+kubectl create -f devuser-developer-binding.yaml
+kubectl get roles
+kubectl get rolebindings
+kubectl describe role developer
+kubectl describe rolebinding devuser-developer-binding
+```
+
+## Verifiy Access
+```
+kubectl auth can-i create deployments
+kubectl auth can-i delete nodes
+kubectl auth can-i create deployments --as dev-user
+kubectl auth can-i create pods --as dev-user
+kubectl auth can-i create pods --as dev-user --namespace test
+```
+
+## Cluster Roles
+
+You won't be able to isolate the nodes within the namespaces, as these are cluster wide resources.
+there by, resources are catagorized either namespaced or cluster
+
+```
+kubectl api-resources --namespaced=true
+kubectl api-resources --namespaced=false
+```
+
+You can create a cluster role for namespace resources as well. When you do that user will have access to these resources across all namespaces
