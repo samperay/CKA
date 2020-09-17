@@ -48,6 +48,12 @@ Contains files related to k8 for Certified Kubernetes Administrator certificatio
 - Security Contexts
 - Network Policies
 
+# Troubleshooting
+
+- Application Failue
+- Worker node Failure
+- Control plane Failue
+- Networking Failure
 
 # Kubernets Oneliners
 These are something which are required to be used as a reference so that it will help.
