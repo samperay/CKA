@@ -32,3 +32,18 @@ serivce kubelet status
 sudo journalctl –u kubelet
 openssl x509 -in /var/lib/kubelet/worker-1.crt -text
 ```
+## Worker nodes failure
+
+- Status of the Nodes in the cluster, are they Ready or NotReady
+- If they are NotReady then check the LastHeartbeatTime of the node
+- Check the possible CPU and MEMORY using top and df -h
+- Check the status and the logs of the kubelet for the possible issues.
+- Check the kubelet Certificates, they are not expired, and in the right group and issued by the right CA.
+
+```
+kubectl get nodes
+kubectl describe node worker-1
+serivce kubelet status
+sudo journalctl –u kubelet
+openssl x509 -in /var/lib/kubelet/worker-1.crt -text
+```
