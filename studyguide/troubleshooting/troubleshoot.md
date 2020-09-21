@@ -47,3 +47,5 @@ serivce kubelet status
 sudo journalctl –u kubelet
 openssl x509 -in /var/lib/kubelet/worker-1.crt -text
 ```
+
+## Network Failures
