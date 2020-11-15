@@ -34,7 +34,7 @@ The taint effect defines what would happen to the pods if they do not tolerate t
 
 - NoSchedule
 - PreferNoSchedule
-- NoExecute1
+- NoExecute
 
 The default policy of the any node is no tains so that any pod can be placed in any of the nodes.
 
@@ -43,6 +43,7 @@ kubectl taint nodes kubenode01 env=qa:NoSchedule
 kubectl describe nodes kubenode01 | grep -i taint
 kubectl taint nodes kubenode01 env-
 kubectl describe nodes kubenode01 | grep -i taint
+kubectl taint nodes master controlplane node-role.kubernetes.io/master:NoSchedule-
 ```
 
 Taints and Tolerations does not tell the pod to go to a particular node. Instead, it tells the node to only accept pods with certain tolerations.
