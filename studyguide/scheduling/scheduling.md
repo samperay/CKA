@@ -133,6 +133,11 @@ ExecStart=/usr/local/bin/kubelet \\
 .
 ```
 
+Create a static pod
+```
+kubectl run --restart=Never --image=busybox static-busybox --dry-run=client -o yaml --command -- sleep 1000 > /etc/kubernetes/manifests/static-busybox.yaml
+```
+
 ## Second Method
 Incase if you have created kubeadmin way of configuring the cluster, your manifests will be in below location.
 ```
