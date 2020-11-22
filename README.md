@@ -15,7 +15,7 @@ Contains files related to k8 for Certified Kubernetes Administrator certificatio
 - Schedule Events
 - Configure Scheduler
 
-# Application Lify Cycle Management
+# Application Life Cycle Management
 
 - Rolling Updates and Rollbacks in Deployments
 - Configure Applications
