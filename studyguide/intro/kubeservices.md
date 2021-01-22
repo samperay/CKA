@@ -1,7 +1,7 @@
 # Deployment
 
 Modifying, scaling, upgrading the resource allocation all these can be done using deployments.
-single instace of application or each container is encapsulated in pod, and such pods are deployed using the replication controller or replica sets. kubernetes provides the higher object called **deployment* which provides us capabilty upgrade instances using rolling update, scaling, modify etc
+single instace of application or each container is encapsulated in pod, and such pods are deployed using the replication controller or replica sets. kubernetes provides the higher object called **deployment** which provides us capabilty upgrade instances using rolling update, scaling, modify etc
 
 ## Deployment using files
 
@@ -98,7 +98,7 @@ kubectl get rs
 kubectl describe rs
 ```
 
-# Difference betweek replication controller and replication set
+# Difference between replication controller and replication set
 The key difference between the replica set and the replication controller is, the replication controller only supports equality-based selector whereas the replica set supports set-based selector
 
 # Services
