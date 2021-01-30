@@ -71,7 +71,7 @@ The primary feature of Node Affinity is to ensure that the pods are hosted on pa
 ## Node Affinity Types
 
 ### Available
-requiredDuringSchedulingIgnoredDuringExecution
+requiredDuringSchedulingIgnoredDuringExecution 
 preferredDuringSchedulingIgnoredDuringExecution
 
 ### Planned
