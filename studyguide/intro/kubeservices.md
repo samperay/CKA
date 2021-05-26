@@ -91,6 +91,7 @@ kubectl describe rc
 
 # Replication Set
 Replica Set ensures how many replica of pod should be running. It can be considered as a replacement of replication controller.
+https://blog.knoldus.com/replicationcontroller-and-replicaset-in-kubernetes/
 
 ```
 kubectl create -f replicaset.yml
