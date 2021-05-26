@@ -50,9 +50,9 @@ Contains files related to k8 for Certified Kubernetes Administrator certificatio
 
 # Troubleshooting
 
-- Application Failue
+- Application Failure
 - Worker node Failure
-- Control plane Failue
+- Control plane Failure
 - Networking Failure
 
 # Kubernets Oneliners
