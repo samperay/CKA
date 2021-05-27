@@ -29,3 +29,44 @@ spec:
   - port: 80
     targetPort: 80
     nodePort: 30012
+
+## when you have the pods and service running, and would like to check does the nginx working properly,
+```
+vagrant@master:~$ kubectl get pods -o wide
+NAME    READY   STATUS    RESTARTS   AGE   IP             NODE     NOMINATED NODE   READINESS GATES
+nginx   1/1     Running   0          13m   192.168.1.16   node01   <none>           <none>
+vagrant@master:~$
+
+vagrant@master:~$ kubectl get svc nginx-svc
+NAME        TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+nginx-svc   NodePort   10.99.186.246   <none>        80:30012/TCP   5m59s
+vagrant@master:~$
+
+vagrant@master:~$ curl http://node01:30012
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+vagrant@master:~$
+```

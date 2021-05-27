@@ -14,10 +14,10 @@ kubectl delete deployment depname
 
 ## Deployment using kubectl cli
 ```
-kubectl create deployment --image=nginx nginx
+kubectl create deployment nginx --image=nginx
 kubectl run nginx image=nginx:latest
-kubectl create deployment --image=nginx --dry-run -o yaml
-kubectl create deployment --image=nginx --dry-run -o yaml > nginx.yml
+kubectl create deployment nginx --image=nginx --dry-run=client -o yaml
+kubectl create deployment nginx --image=nginx --dry-run=client -o yaml > nginx.yml
 ```
 
 ## list all kubernetes resources
@@ -34,7 +34,7 @@ Namespaces are intended for use in environments with many users spread across mu
 
 ```
 kubectl get ns
-kubectl create namespace dev
+kubectl create ns dev
 ```
 
 Create pod using yaml file, that creates both namespace as well as pod
@@ -44,8 +44,8 @@ kubectl create -f pod.yml
 ```
 
 ```
-kubectl run nginx --image=nginx --namespace=dev
-kubectl get pods --namespace=dev
+kubectl run nginx --image=nginx -n dev
+kubectl get pods -n dev
 ```
 
 ## Namespace and DNS
@@ -66,7 +66,7 @@ kubectl config set-context $(kubectl config current-context) --namespace=dev
 ## Deploy pods
 
 ```
-kubectl run nginx --image nginx:latest
+kubectl run nginx --image=nginx
 kubectl get pods -o wide
 ```
 
@@ -110,9 +110,9 @@ Kubernetes Services enables communication between various components within an o
 
 There are 3 types of service types in kubernetes
 
-- NodePort: Where the services makes an internal POD accessable on a POD on the NODE
+- NodePort: Where the services makes an internal POD accessible on a POD on the NODE
 - ClusterIP: The service creates a Virtual IP inside the cluster to enable communication between different services such as a set of frontend servers to a set of backend servers
-- LoadBalancer: Provisions a loadbalancer for our application in supported cloud providers.
+- LoadBalancer: Provisions a load balancer for our application in supported cloud providers.
 
 ```
 kubectl create -f pod-svc.yml
