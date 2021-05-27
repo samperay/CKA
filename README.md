@@ -57,3 +57,8 @@ Contains files related to k8 for Certified Kubernetes Administrator certificatio
 
 # Kubernets Oneliners
 These are something which are required to be used as a reference so that it will help.
+
+
+# References
+Configure your k8's
+https://www.ibm.com/cloud/blog/8-kubernetes-tips-and-tricks
