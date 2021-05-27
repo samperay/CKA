@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-red-v5
+  labels:
+    app: nginx
+    type: front-end
+    version: v5
+    color: red
+spec:
+  template:
+    metadata:
+      name: nginx
+      labels:
+        app: nginx
+        type: front-end
+        version: v5
+        color: red
+    spec:
+      containers:
+        - name: nginx
+          image: sunlnx/kubenginx:v5
+      tolerations:
+        - key: color
+          value: blue
+          operator: Equal
+          effect: NoSchedule
+  replicas: 2
+  selector:
+    matchLabels:
+      type: front-end
