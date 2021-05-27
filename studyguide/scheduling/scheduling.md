@@ -16,7 +16,8 @@ Labels and Selectors are standard methods to group things together. Labels are p
 
 you can select the pod using labels
 ```
-kubectl get pods --selector app=nginx
+kubectl get pods -l app=nginx
+kubectl get pods --selector app=nginx,type=front-end
 ```
 
 ## Annotations
@@ -27,8 +28,8 @@ While labels and selectors are used to group objects, annotations are used to re
 Pod to node relationship and how you can restrict what pods are placed on what nodes.
 Taints and Tolerations are used to set restrictions on what pods can be scheduled on a node.
 
-pods which are tolerant to partitcular taint will be scheduled on that node.
-there are 3 policies of tains:
+pods which are tolerant to particular taint will be scheduled on that node.
+there are 3 policies of taints:
 
 The taint effect defines what would happen to the pods if they do not tolerate the taint.
 
@@ -36,24 +37,32 @@ The taint effect defines what would happen to the pods if they do not tolerate t
 - PreferNoSchedule
 - NoExecute
 
-The default policy of the any node is no tains so that any pod can be placed in any of the nodes.
+The default policy of the any node is no taints so that any pod can be placed in any of the nodes.
 
+Default, master nodes have a **NoSchedule** so that there won't be any pods running on the master nodes.
+We would for the testing purpose *untaint* the node and then *revert* back
+
+```
+kubectl taint nodes master node-role.kubernetes.io/master- [ No taints and new pods will be created on this node ]
+kubectl taint nodes master node-role.kubernetes.io/master:NoSchedule [ tainted ]
+```
+Few more,
 ```
 kubectl taint nodes kubenode01 env=qa:NoSchedule
 kubectl describe nodes kubenode01 | grep -i taint
 kubectl taint nodes kubenode01 env-
 kubectl describe nodes kubenode01 | grep -i taint
-kubectl taint nodes master controlplane node-role.kubernetes.io/master:NoSchedule-
+kubectl taint nodes master node-role.kubernetes.io/master:NoSchedule-
 ```
 
 Taints and Tolerations does not tell the pod to go to a particular node. Instead, it tells the node to only accept pods with certain tolerations.
 
 # NodeSelector
 
-We add new property called Node Selector to the spec section and specify the label. The scheduler uses these labels to match and identify the right node to place the pods on
+We add new property called Node Selector to the spec section and specify the label. The scheduler uses these labels to match and identify the right node to place the pods onto the nodes.
 
 Label the nodes to ensure your pod is getting scheduled on a desired right nodes by kube-scheduler.
-If there are more complex operations(==, !=, etc) are involved then we might not be able to achieve using nodeSelector, so we need to use *nodeAffinity* and *antiaffinity*
+If there are more complex operations(==, !=, etc) are involved then we might not be able to achieve using nodeSelector, so we need to use *nodeAffinity* and *anti-affinity*
 
 default labels of the node
 ```
@@ -71,7 +80,7 @@ The primary feature of Node Affinity is to ensure that the pods are hosted on pa
 ## Node Affinity Types
 
 ### Available
-requiredDuringSchedulingIgnoredDuringExecution 
+requiredDuringSchedulingIgnoredDuringExecution
 preferredDuringSchedulingIgnoredDuringExecution
 
 ### Planned
@@ -82,7 +91,7 @@ preferredDuringSchedulingRequiredDuringExecution
 Each node has a set of CPU, Memory and Disk resources available.
 By default, K8s assume that a pod or container within a pod requires 0.5 CPU and 256Mi of memory. This is known as the Resource Request for a container.
 
-If your application within the pod requires more than the default resources, you need to set them in the pod defination file.
+If your application within the pod requires more than the default resources, you need to set them in the pod definition file.
 
 ```
 resources:
@@ -92,10 +101,8 @@ resources:
 ```
 
 ## Limits
-
 By default, k8s sets resource limits to 1 CPU and 512Mi of memory
-
-You can set the resource limits in the pod defination file.
+You can set the resource limits in the pod definition file.
 ```
 limits:
   memory: "2Gi"
@@ -105,23 +112,23 @@ Note: Remember Requests and Limits for resources are set per container in the po
 
 # DaemonSet
 
-DaemonSets are like replicasets, as it helps in to deploy multiple instances of pod. But it runs one copy of your pod on each node in your cluster.
+DaemonSets are like replicaSet, as it helps in to deploy multiple instances of pod. But it runs one copy of your pod on each node in your cluster.
 
-Daemonset usecases:
+Daemonset use cases:
 - Monitoring solution
 - log viewer
 - Helper pods for applications
 - Networking pods (weave net)
 
 # Static pods
-When you need to create pods without any interference from the kubeapi server or kubernetes management control plane, you can write your yaml files and place in the kubelet directory and create pods. these kind of pods which have no intereference from the any of the kubernetes components are called as *static pod*
+When you need to create pods without any interference from the kubeapi server or kubernetes management control plane, you can write your yaml files and place in the kubelet directory and create pods. these kind of pods which have no interference from the any of the kubernetes components are called as *static pod*
 
-What if we run the static pods and if these nodes are part of kubernetes manage control plane, would it be known to kubeapi server? Yes kubeapi server would be known that there is pod running in the node as kubelet provides a mirror object in the kubeapi as readonly object.
+What if we run the static pods and if these nodes are part of kubernetes manage control plane, would it be known to kubeapi server? Yes kubeapi server would be known that there is pod running in the node as kubelet provides a mirror object in the kubeapi as read-only object.
 
 
 ## First Method
 
-You can configure the kubelet to read the pod defination files from a directory on the server designated to store information about pods.The designated directory can be any directory on the host and the location of that directory is passed in to the kubelet as an option while running the service. *--pod-manifest-path*
+You can configure the kubelet to read the pod definition files from a directory on the server designated to store information about pods.The designated directory can be any directory on the host and the location of that directory is passed in to the kubelet as an option while running the service. *--pod-manifest-path*
 
 ```
 systemctl status kubelet.service
