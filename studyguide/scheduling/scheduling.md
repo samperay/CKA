@@ -61,16 +61,13 @@ Taints and Tolerations does not tell the pod to go to a particular node. Instead
 
 We add new property called Node Selector to the spec section and specify the label. The scheduler uses these labels to match and identify the right node to place the pods onto the nodes.
 
-Label the nodes to ensure your pod is getting scheduled on a desired right nodes by kube-scheduler.
+Label the nodes to ensure your pod is getting scheduled on a desired right nodes by kube-scheduler, however you can't really guarantee that the pods does only gets scheduled on the label being added. sometimes it might also get scheduled to other nodes as well. So, to fix this we would add nodeAffinity on the pods sections.
+
 If there are more complex operations(==, !=, etc) are involved then we might not be able to achieve using nodeSelector, so we need to use *nodeAffinity* and *anti-affinity*
 
 default labels of the node
 ```
-kubectl describe nodes kubenode01 | grep -i label
-Labels:             beta.kubernetes.io/arch=amd64
-```
-
-```
+get nodes node01 --show-labels
 kubectl label nodes kubenode01 size=small
 ```
 

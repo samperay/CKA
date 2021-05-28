@@ -11,7 +11,7 @@ spec:
           - key: size
             operator: NotIn
             values:
-            - small
+              - small
   containers:
   - name: nginx-nodeaffinity
     image: nginx:latest
