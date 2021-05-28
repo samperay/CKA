@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-blue-v4
+  labels:
+    app: nginx
+    type: front-end
+    version: v4
+    color: blue
+spec:
+  template:
+    metadata:
+      name: nginx
+      labels:
+        app: nginx
+        type: front-end
+        version: v4
+        color: blue
+    spec:
+      containers:
+        - name: nginx
+          image: sunlnx/kubenginx:v4
+      tolerations:
+        - key: color
+          value: blue
+          operator: Equal
+          effect: NoSchedule
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: color
+                operator: In
+                values:
+                  - blue
+  replicas: 4
+  selector:
+    matchLabels:
+      type: front-end
