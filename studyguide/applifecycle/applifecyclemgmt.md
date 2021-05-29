@@ -185,5 +185,15 @@ You can configure multiple such initContainers as well, like how we did for mult
     command: ['sh', '-c', 'until nslookup mydb; do echo waiting for mydb; sleep 2; done;']
 ```
 
+# Liveness, Readiness, Startup probes
+
+Many applications running for long periods of time eventually transition to broken states, and cannot recover except by being restarted. Kubernetes provides liveness probes to detect and remedy such situations.
+
+kubelet uses readiness probes to know when a container is ready to start accepting traffic. one use of this signal is to control which pods are used as backend for services. when pod is not ready, its removed from service LB. Sometimes, applications are temporarily unable to serve traffic. For example, an application might need to load large data or configuration files during startup, or depend on external services after startup. In such cases, you don't want to kill the application, but you don't want to send it requests either. Kubernetes provides readiness probes to detect and mitigate these situations
+
+kubelet uses startup probes to know when a container application has started. if any such probe is configured, it disables liveness and readiness checks until it succeeds. Sometimes, you have to deal with legacy applications that might require an additional startup time on their first initialization. In such cases, it can be tricky to set up liveness probe parameters without compromising the fast response to deadlocks that motivated such a probe
+
+
+
 References:
 https://kubernetes.io/docs/tasks/debug-application-cluster/get-shell-running-container/

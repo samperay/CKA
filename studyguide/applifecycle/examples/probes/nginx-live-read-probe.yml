@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginxhttpliveness
+  labels:
+    app: nginx
+spec:
+  containers:
+    - name: nginx-liveness
+      image: nginx
+      livenessProbe:
+        httpGet:
+          path: /index.html
+          port: 80
+        initialDelaySeconds: 3
+        periodSeconds: 3
+      readinessProbe:
+        exec:
+          command:
+            - cat
+            - /usr/share/nginx/html/index.html
