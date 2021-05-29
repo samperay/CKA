@@ -1,4 +1,4 @@
-# Application Lify Cycle Management
+# Application Life Cycle Management
 
 ## Rollout and Versioning in a Deployment
 when you first create deployment, it will create a rollout which trigger deployment ( e.g v1), future when the application is upgraded meaning when the container version is updated to a new one a new rollout is triggered and a new deployment revision is created named revision (v2).
@@ -11,7 +11,7 @@ There are 2 types of deployment strategies
 - RollingUpdate (Default Strategy)
 
 ### Recreate
-One way to upgrade these to a newer version is to destroy all of these and then create newer versions of application instances meaning first destroy the five running instances and then deploy five new instances of the new application version.
+One way to upgrade these to a newer version is to destroy all of these and then create newer versions of application instances meaning first destroy the running instances and then deploy the new instances of the new application version.
 
 The problem with this as you can imagine is that during the period after the older versions are down and before any newer version is up the application is down and inaccessible to users this strategy is known as the Recreate strategy.
 
@@ -86,8 +86,9 @@ There are 2 ways of creating a configmap.
 #### Imperative
 
 ```
-$ kubectl create configmap app-config --from-literal=APP_COLOR=blue --from-literal=APP_MODE=prod
-$ kubectl create configmap app-config --from-file=app_config.properties (Another way)
+$ kubectl create configmap dbconfig --from-literal=DB_HOST="mysql_db" --from-literal=DB_PASSWORD= "mysql" --from-literal=DB_PORT=3306
+
+$ kubectl create configmap dbconfig --from-file=dbconfig.properties (Another way)
 ```
 
 #### Declarative
@@ -96,16 +97,33 @@ $ kubectl create configmap app-config --from-file=app_config.properties (Another
 apiVersion: v1
 kind: ConfigMap
 metadata:
- name: app-config
+    name: dbconfig
 data:
- APP_COLOR: blue
- APP_MODE: prod
+  DB_HOST: "mysql_db"
+  DB_PASSWORD: "mysql"
+  DB_PORT: "3306"
 ```
 
+reference these config maps to the pods and then check by logging into the pod, you must be able to see the env variables.
+
+```
+containers:
+  - name: env-configmap
+    image: nginx
+    envFrom:
+      - configMapRef:
+          name: dbconfig
+```
+
+```
+kubectl get pods -o wide
+kubectl exec -it pod/pod-name sh
+env
+```
 There are other ways to inject configuration variables into pod
 
-- You can inject it as a Single Environment Variable
-- You can inject it as a file in a Volume
+- You can inject it as a single environment variable.
+- You can inject it as a file in a Volume.
 
 ## Secrets
 
@@ -116,7 +134,7 @@ How Kubernetes handles secrets ?
 - Once the Pod that depends on the secret is deleted, kubelet will delete its local copy of the secret data as well.
 
 ## Multi Container Pod
-There are at times you need to have an container which has two or more services required to be available ( e.g webserver & log agent). They need to co-exists and hence they are create/deleted at the same time. Such cases we are required to have multi container pods. They would share same namespaces, newtork isolations etc .
+There are at times you need to have an container which has two or more services required to be available ( e.g webserver & log agent). They need to co-exists and hence they are create/deleted at the same time. Such cases we are required to have multi container pods. They would share same namespaces, network isolations etc .
 
 There are 3 common patterns, when it comes to designing multi-container PODs. The first and what we just saw with the logging service example is known as a *side car pattern*. The others are the adapter and the ambassador pattern.
 
@@ -124,12 +142,10 @@ There are 3 common patterns, when it comes to designing multi-container PODs. Th
 ```
 spec:
   containers:
-  - name: simple-webapp
-    image: simple-webapp
-    ports:
-    - ContainerPort: 8080
-  - name: log-agent
-    image: log-agent
+      - name: nginx
+        image: nginx:latest
+      - name: redis
+        image: redis
 ```
 what incase if you require any container to be run only once in the multi pod container ?
 i.e to pull a code or binary from a repository that will be used by the main web application. That is a task that will be run only  one time when the pod is first created. Or a process that waits  for an external service or database to be up before the actual application starts
