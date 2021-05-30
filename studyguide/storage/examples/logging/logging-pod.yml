@@ -1,0 +1,21 @@
+# this pod will create the logs in the container and when it dies,
+# we won't be able to get the logs for the application.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: logging
+spec:
+  containers:
+    - name: log
+      image: busybox
+      command: ["sh"]
+      args:
+        - "-c"
+        - "while true; do echo hello world; sleep 2; done>>/log/app.log"
+      volumeMounts:
+        - mountPath: /log
+          name: applogvols
+  volumes:
+    - name: applogvols
+      hostPath:
+        path: /var/log/applogs
