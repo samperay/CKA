@@ -6,6 +6,6 @@ spec:
   accessModes: [ "ReadWriteOnce" ]
   capacity:
    storage: 1Gi
-  persistentVolumeReclaimPolicy: delete
+  persistentVolumeReclaimPolicy: Delete
   hostPath:
    path: /tmp/data
